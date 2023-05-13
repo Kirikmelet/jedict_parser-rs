@@ -18,7 +18,6 @@ where
     T: Debug + Default + JElementData,
 {
     file_contents: String,
-    language: Option<String>,
     from_name_func: BoxedFromNameType<T>,
     verify_type_func: BoxedVerifyType<T>,
 }
@@ -30,8 +29,8 @@ where
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
-            "TestDictParser{{file_contents={:?},language={:?}}}",
-            self.file_contents, self.language,
+            "TestDictParser{{file_contents={:?},}}",
+            self.file_contents,
         )
     }
 }
@@ -148,7 +147,6 @@ where
         let verify_type_func: BoxedVerifyType<T> = Box::new(|_x| None);
         Self {
             file_contents: String::default(),
-            language: None,
             from_name_func,
             verify_type_func,
         }
@@ -164,9 +162,6 @@ where
 {
     pub fn create() -> Self {
         Self(JDictParser::<T>::default())
-    }
-    pub fn language(self, language: Option<String>) -> Self {
-        Self(JDictParser { language, ..self.0 })
     }
     pub fn file_contents(self, file_contents: String) -> Self {
         Self(JDictParser {
@@ -209,66 +204,54 @@ pub mod jedict_parser_configs {
     use super::{JDictParser, JDictParserBuilder};
     pub fn jmdict_parser(
         file_contents: String,
-        language: Option<String>,
     ) -> JDictParser<JMElementData> {
         JDictParserBuilder::<JMElementData>::create()
             .file_contents(file_contents)
-            .language(language)
             .from_name_func(Box::new(JMElementData::from_name))
             .verify_type_func(Box::new(JMElementData::verify_type))
             .build()
     }
     pub fn jmdict_parser_from_path(
         path: String,
-        language: Option<String>,
     ) -> JDictParser<JMElementData> {
         JDictParserBuilder::<JMElementData>::create()
             .file_path(path)
-            .language(language)
             .from_name_func(Box::new(JMElementData::from_name))
             .verify_type_func(Box::new(JMElementData::verify_type))
             .build()
     }
     pub fn jndict_parser(
         file_contents: String,
-        language: Option<String>,
     ) -> JDictParser<JNElementData> {
         JDictParserBuilder::<JNElementData>::create()
             .file_contents(file_contents)
-            .language(language)
             .from_name_func(Box::new(JNElementData::from_name))
             .verify_type_func(Box::new(JNElementData::verify_type))
             .build()
     }
     pub fn jndict_parser_from_path(
         path: String,
-        language: Option<String>,
     ) -> JDictParser<JNElementData> {
         JDictParserBuilder::<JNElementData>::create()
             .file_path(path)
-            .language(language)
             .from_name_func(Box::new(JNElementData::from_name))
             .verify_type_func(Box::new(JNElementData::verify_type))
             .build()
     }
     pub fn kanjidic2_parser(
         file_contents: String,
-        language: Option<String>,
     ) -> JDictParser<KD2ElementData> {
         JDictParserBuilder::<KD2ElementData>::create()
             .file_contents(file_contents)
-            .language(language)
             .from_name_func(Box::new(KD2ElementData::from_name))
             .verify_type_func(Box::new(KD2ElementData::verify_type))
             .build()
     }
     pub fn kanjidic2_parser_from_path(
         path: String,
-        language: Option<String>,
     ) -> JDictParser<KD2ElementData> {
         JDictParserBuilder::<KD2ElementData>::create()
             .file_path(path)
-            .language(language)
             .from_name_func(Box::new(KD2ElementData::from_name))
             .verify_type_func(Box::new(KD2ElementData::verify_type))
             .build()

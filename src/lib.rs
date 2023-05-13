@@ -21,11 +21,10 @@ mod tests {
     use std::sync::Once;
 
     use crate::dict::DictToJson;
-    use crate::flutter_api::KD2Dict;
-    use crate::jmdict::dict::{JMDictDictionary, JMDict};
-    
-    use crate::jndict::dict::{JNDictDictionary, JNDict};
-    use crate::kanjidic2::dict::KD2DictDictionary;
+    use crate::jmdict::dict::{JMDict, JMDictDictionary};
+
+    use crate::jndict::dict::{JNDict, JNDictDictionary};
+    use crate::kanjidic2::dict::{KD2Dict, KD2DictDictionary};
     use crate::parser::jedict_parser_configs;
 
     static INIT_LOGGER: Once = Once::new();
@@ -42,19 +41,18 @@ mod tests {
     #[test]
     fn ensure_jmdict_file_reads() {
         init_logger();
-        let parser = jedict_parser_configs::jmdict_parser(JMDICT_FILE.to_string(), None);
+        let parser = jedict_parser_configs::jmdict_parser(JMDICT_FILE.to_string());
         let Some(dict) = parser.parse() else {
             panic!("Empty dict!")
         };
         let entries = JMDictDictionary::create(dict);
         std::fs::write("log_jmdict.json", entries.to_json::<JMDict>());
         assert!(!entries.0.is_empty());
-        //assert!(!dict.borrow().get_id().is_empty());
     }
     #[test]
     fn ensure_jndict_file_reads() {
         init_logger();
-        let parser = jedict_parser_configs::jndict_parser(JNDICT_FILE.to_string(), None);
+        let parser = jedict_parser_configs::jndict_parser(JNDICT_FILE.to_string());
         let Some(dict) = parser.parse() else {
             panic!("Empty dict!")
         };
@@ -72,7 +70,7 @@ mod tests {
     #[test]
     fn ensure_kanjidic2_file_reads() {
         init_logger();
-        let parser = jedict_parser_configs::kanjidic2_parser(KANJIDIC2_FILE.to_string(), None);
+        let parser = jedict_parser_configs::kanjidic2_parser(KANJIDIC2_FILE.to_string());
         let Some(dict) = parser.parse() else {
             panic!("Empty dict!")
         };
@@ -88,4 +86,3 @@ mod tests {
         ////assert!(!dict.borrow().get_id().is_empty());
     }
 }
-
