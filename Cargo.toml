@@ -1,0 +1,31 @@
+[package]
+name = "jedict_parser"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["staticlib", "cdylib", "rlib"]
+name = "jedict_parser"
+path = "src/lib.rs"
+
+
+[dependencies]
+anyhow = {version="1.0.68", optional=true}
+flutter_rust_bridge = {version= "1", optional=true}
+humantime = "2.1.0"
+lazy_static = "1.4.0"
+log = "0.4.17"
+quick-xml = { version = "0.27.1", features = ["serialize"] }
+regex = "1.7.3"
+serde = { version = "1.0.152", features = ["derive"] }
+serde_json = "1.0.96"
+toml_edit = { version = "0.19.0", features = ["serde"] }
+tracing = {version= "0.1.37", features = ["log"] }
+tracing-core = "0.1.30"
+tracing-subscriber = "0.3.16"
+
+[features]
+flutter = ["flutter_rust_bridge", "anyhow"]
+
